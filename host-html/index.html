@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Host Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    p {
+      text-align: center;
+      color: #333;
+      font-size: 18px;
+    }
+
+    iframe {
+      display: block;
+      margin: 20px auto;
+      border: 0;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Host Website</h1>
+  <iframe id="embedded-iframe" src="http://localhost:3000/embeded" width="400" hei+ght="400" frameborder="0"></iframe>
+  <p id="message1"></p>
+  <button id="send-data-button">Send Data From Parent</button>
+  <script>
+    const iframe = document.getElementById('embedded-iframe');
+    const sendDataButton = document.getElementById('send-data-button');
+    
+    sendDataButton.addEventListener('click', () => {
+      // Access the iframe's contentWindow to send data
+      iframe.contentWindow.postMessage({message: 'This is message from parent', isParent: true}, 'http://localhost:3000');
+    });
+
+    window.addEventListener('message', (event) => {
+      if (event.origin === 'http://localhost:3000') {
+        document.getElementById('message1').innerHTML = event.data;
+        window.postMessage('Lets talk!', '*');
+      }
+    });
+  </script>
+</body>
+</html>
